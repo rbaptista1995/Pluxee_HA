@@ -49,9 +49,13 @@ async def async_setup_entry(hass: HomeAssistant,
 
 def _parse_tx_date(date_str: str) -> datetime:
     """Parse transaction dates while tolerating unexpected formats."""
-    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"):
+    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y", "%d.%m.%Y", "%d.%m"):
+        
         try:
-            return datetime.strptime(date_str, fmt)
+            parsed = datetime.strptime(date_str, fmt)
+            if fmt == "%d.%m":
+                parsed = parsed.replace(year=datetime.now().year)
+            return parsed
         except (ValueError, TypeError):
             continue
 
