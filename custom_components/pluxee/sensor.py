@@ -63,6 +63,19 @@ def _parse_tx_date(date_str: str) -> datetime:
     return datetime.min
 
 
+def _format_tx_amount(amount: Any) -> str:
+    """Format transaction amount assuming last two digits are cents."""
+    amount_text = str(amount).strip()
+    sign = "-" if amount_text.startswith("-") else ""
+    digits_only = "".join(ch for ch in amount_text if ch.isdigit())
+
+    if not digits_only:
+        return "0.00"
+
+    value = int(digits_only) / 100
+    return f"{sign}{value:.2f}"
+
+
 class MyEdenredSensor(SensorEntity):
     """Representation of a MyPluxee Card (Sensor)."""
 
@@ -151,7 +164,7 @@ class MyEdenredSensor(SensorEntity):
                     {
                         "date": t.date,
                         "name": t.name,
-                        "amount": t.amount,
+                        "amount": _format_tx_amount(t.amount),
                     }
                     for t in movement_list[:10]
                 ]
