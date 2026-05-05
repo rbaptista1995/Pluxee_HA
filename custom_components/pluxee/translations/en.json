@@ -6,11 +6,11 @@
                 "title": "Add Credentials",
                 "description": "Please type your credentials",
                 "data": {
-                    "username": "Email",
+                    "username": "NIF",
                     "password": "Password"
                 },
                 "data_description": {
-                    "username": "The email used to login in https://consumidores.pluxee.pt/ portal",
+                    "username": "The NIF used to login in https://consumidores.pluxee.pt/ portal",
                     "password": "The password used to login in https://consumidores.pluxee.pt/ portal"
                 }
             }
