@@ -40,7 +40,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if await self._test_credentials(user_input):
                 _LOGGER.debug("Config is valid!")
                 return self.async_create_entry(
-                    title="MyEdenred " + user_input["username"], 
+                    title="PLUXEE card integration " + user_input["username"], 
                     data = user_input
                 ) 
             else:
