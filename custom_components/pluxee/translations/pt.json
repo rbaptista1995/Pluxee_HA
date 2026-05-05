@@ -4,14 +4,14 @@
         "step": {
             "user": {
                 "title": "Credenciais de Acesso",
-                "description": "Por favor, introduza o seu nome de utilizador e palavra passe que usa para ter acesso ao portal https://consumidores.pluxee.pt/.",
+                "description": "Por favor, introduza o seu NIF e palavra-passe que usa para ter acesso ao portal https://consumidores.pluxee.pt/.",
                 "data": {
-                    "username": "Email",
-                    "password": "Palavra Passe"
+                    "username": "NIF",
+                    "password": "Palavra-passe"
                 },
                 "data_description": {
-                    "username": "O Email usado para aceder ao portal https://consumidores.pluxee.pt/",
-                    "password": "O Palavra Passe usada para aceder ao portal https://consumidores.pluxee.pt/"
+                    "username": "O NIF usado para aceder ao portal https://consumidores.pluxee.pt/",
+                    "password": "A palavra-passe usada para aceder ao portal https://consumidores.pluxee.pt/"
                 }
             }
         },
