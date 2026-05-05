@@ -68,21 +68,35 @@ class MY_EDENRED:
         balance_raw = self._extract(html, r'card-heading[^>]*>\s*([0-9\.,]+)') or "0"
         balance = float(balance_raw.replace(".", "").replace(",", "."))
 
-        tx_pattern = re.compile(
-            r'<div class="date_mov">\s*([0-9]{2}\.[0-9]{2})\s*</div>.*?'
-            r'<div class="description_mov">\s*([^<]+?)\s*</div>.*?'
-            r'<div class="value_mov [^"]*">\s*([+-]?[0-9\.,]+)',
-            re.S,
-        )
+        movement_patterns = [
+            re.compile(
+                r'<div[^>]*class="[^"]*date_mov[^"]*"[^>]*>\s*([0-9]{2}\.[0-9]{2}(?:\.[0-9]{4})?)\s*</div>.*?'
+                r'<div[^>]*class="[^"]*description_mov[^"]*"[^>]*>\s*([^<]+?)\s*</div>.*?'
+                r'<div[^>]*class="[^"]*value_mov[^"]*"[^>]*>\s*([+-]?[0-9\.,]+)',
+                re.S,
+            ),
+            re.compile(
+                r'<span[^>]*class="[^"]*date_mov[^"]*"[^>]*>\s*([0-9]{2}\.[0-9]{2}(?:\.[0-9]{4})?)\s*</span>.*?'
+                r'<span[^>]*class="[^"]*description_mov[^"]*"[^>]*>\s*([^<]+?)\s*</span>.*?'
+                r'<span[^>]*class="[^"]*value_mov[^"]*"[^>]*>\s*([+-]?[0-9\.,]+)',
+                re.S,
+            ),
+        ]
+
         movements = []
-        for m in tx_pattern.finditer(html):
-            date, name, amount = m.groups()
-            amount = amount.replace(".", "").replace(",", ".")
-            movements.append({
-                "transactionDate": date,
-                "transactionName": unquote(name).strip(),
-                "amount": amount,
-            })
+        for pattern in movement_patterns:
+            for m in pattern.finditer(html):
+                date, name, amount = m.groups()
+                amount = amount.replace(".", "").replace(",", ".")
+                movements.append({
+                    "transactionDate": date,
+                    "transactionName": unquote(name).strip(),
+                    "amount": amount,
+                })
+            if movements:
+                break
+
+        _LOGGER.debug("Extracted %s transactions from Pluxee dashboard", len(movements))
 
         return Account({
             "iban": "",
