@@ -1,4 +1,5 @@
 """API to PLUXEE consumer portal."""
+import html
 import logging
 import re
 from datetime import datetime
@@ -96,6 +97,34 @@ class MY_EDENRED:
             if movements:
                 break
 
+        if not movements:
+            table_match = re.search(
+                r'<table[^>]*id="plx-table"[^>]*>(.*?)</table>',
+                html,
+                re.S,
+            )
+            if table_match:
+                tbody = table_match.group(1)
+                rows = re.findall(r"<tr[^>]*>(.*?)</tr>", tbody, re.S)
+                for row in rows:
+                    cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.S)
+                    if len(cells) < 3:
+                        continue
+
+                    date = self._clean_html_text(cells[0])
+                    name = self._clean_html_text(cells[1])
+                    amount_text = self._clean_html_text(cells[2])
+                    amount_match = re.search(r"([+-]?[0-9][0-9\.,]*)", amount_text)
+                    if not (date and name and amount_match):
+                        continue
+
+                    amount = amount_match.group(1).replace(".", "").replace(",", ".")
+                    movements.append({
+                        "transactionDate": date,
+                        "transactionName": unquote(name).strip(),
+                        "amount": amount,
+                    })
+
         _LOGGER.debug("Extracted %s transactions from Pluxee dashboard", len(movements))
 
         return Account({
@@ -111,3 +140,9 @@ class MY_EDENRED:
     def _extract(content: str, pattern: str):
         m = re.search(pattern, content, re.S)
         return m.group(1) if m else None
+
+    @staticmethod
+    def _clean_html_text(value: str) -> str:
+        value = re.sub(r"<[^>]+>", " ", value)
+        value = html.unescape(value)
+        return re.sub(r"\s+", " ", value).strip()
