@@ -1,5 +1,9 @@
 {
     "name": "PLUXEE card integration",
     "country": "PT",
-    "render_readme": true
+    "render_readme": true,
+    "domains": [
+        "pluxee"
+    ],
+    "content_in_root": false
 }
