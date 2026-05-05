@@ -15,5 +15,6 @@ class Transaction:
         return self._data["transactionName"]
 
     @property
-    def amount(self) -> float:
-        return float(self._data["amount"])
+    def amount(self) -> str:
+        """Return raw amount as provided by the upstream parser."""
+        return str(self._data["amount"])

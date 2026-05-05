@@ -64,8 +64,21 @@ def _parse_tx_date(date_str: str) -> datetime:
 
 
 def _format_tx_amount(amount: Any) -> str:
-    """Format transaction amount assuming last two digits are cents."""
+    """Format transaction amount for Home Assistant display."""
     amount_text = str(amount).strip()
+    if not amount_text:
+        return "0.00"
+
+    # Already formatted decimal value (e.g. "-60.86" or "157,50").
+    if "." in amount_text or "," in amount_text:
+        normalized = amount_text.replace(" ", "").replace(".", "").replace(",", ".")
+        if amount_text.count(".") == 1 and amount_text.count(",") == 0:
+            normalized = amount_text
+        try:
+            return f"{float(normalized):.2f}"
+        except ValueError:
+            pass
+
     sign = "-" if amount_text.startswith("-") else ""
     digits_only = "".join(ch for ch in amount_text if ch.isdigit())
 
