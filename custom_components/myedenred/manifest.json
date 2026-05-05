@@ -1,9 +1,9 @@
 {
     "version": "0.1.2",
     "domain": "myedenred",
-    "name": "myEdenred Card Integration",
-    "documentation": "https://github.com/netsoft-ruidias/ha-custom-component-myedenred/blob/main/README.md",
-    "issue_tracker": "https://github.com/netsoft-ruidias/ha-custom-component-myedenred/issues",
+    "name": "Pluxee Card Integration (Portugal)",
+    "documentation": "https://consumidores.pluxee.pt/",
+    "issue_tracker": "https://consumidores.pluxee.pt/",
     "iot_class": "cloud_polling",
     "requirements": [],
     "dependencies": [],
