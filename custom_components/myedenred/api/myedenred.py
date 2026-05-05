@@ -1,4 +1,4 @@
-"""API to MYEDENRED."""
+"""API to PLUXEE consumer portal."""
 import aiohttp
 import logging
 
@@ -15,7 +15,7 @@ _LOGGER.setLevel(logging.DEBUG)
 
 
 class MY_EDENRED:
-    """Interfaces to https://myedenred.pt/"""
+    """Interfaces to https://consumidores.pluxee.pt/"""
 
     def __init__(self, websession):
         self.websession = websession

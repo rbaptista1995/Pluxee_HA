@@ -1,27 +1,25 @@
 {
-    "title": "MyEdenred Cartão Refeição",
+    "title": "Pluxee Cartão Refeição",
     "config": {
         "step": {
             "user": {
                 "title": "Credenciais de Acesso",
-                "description": "Por favor, introduza o seu nome de utilizador e palavra passe que usa para ter acesso ao portal https://www.myedenred.pt/.",
+                "description": "Por favor, introduza o seu nome de utilizador e palavra passe que usa para ter acesso ao portal https://consumidores.pluxee.pt/.",
                 "data": {
                     "username": "Email",
-                    "password": "Palavra Passe",
-                    "includeTransactions": "Incluir a lista de transações?"
+                    "password": "Palavra Passe"
                 },
                 "data_description": {
-                    "username": "O Email usado para aceder ao portal https://www.myedenred.pt/",
-                    "password": "O Palavra Passe usada para aceder ao portal https://www.myedenred.pt/",
-                    "includeTransactions": "Incluir a lista de transações"
+                    "username": "O Email usado para aceder ao portal https://consumidores.pluxee.pt/",
+                    "password": "O Palavra Passe usada para aceder ao portal https://consumidores.pluxee.pt/"
                 }
             }
         },
         "error": {
-            "auth": "Credenciais inválidas para https://www.myedenred.pt/."
+            "auth": "Credenciais inválidas para https://consumidores.pluxee.pt/."
         },
         "abort": {
-            "single_instance_allowed": "Só é permitida uma unica integração do myEdenred.",
+            "single_instance_allowed": "Só é permitida uma unica integração do Pluxee.",
             "already_configured": "Esta integração já existe"
         }
     }

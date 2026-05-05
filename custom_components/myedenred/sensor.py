@@ -4,7 +4,7 @@ from typing import Any
 import aiohttp
 import logging
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Any, Callable, Dict
 
 from homeassistant.components.sensor import (
@@ -47,8 +47,20 @@ async def async_setup_entry(hass: HomeAssistant,
         async_add_entities(sensors, update_before_add=True)
 
 
+def _parse_tx_date(date_str: str) -> datetime:
+    """Parse transaction dates while tolerating unexpected formats."""
+    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"):
+        try:
+            return datetime.strptime(date_str, fmt)
+        except (ValueError, TypeError):
+            continue
+
+    _LOGGER.debug("Unknown date format from Pluxee transaction: %s", date_str)
+    return datetime.min
+
+
 class MyEdenredSensor(SensorEntity):
-    """Representation of a MyEdenred Card (Sensor)."""
+    """Representation of a MyPluxee Card (Sensor)."""
 
     def __init__(self, card: Card, api: MY_EDENRED, config: Any):
         super().__init__()
@@ -67,7 +79,7 @@ class MyEdenredSensor(SensorEntity):
     @property
     def name(self) -> str:
         """Return the name of the entity."""
-        return f"Edenred Card {self._card.number}"
+        return f"Pluxee Card {self._card.number}"
 
     @property
     def unique_id(self) -> str:
@@ -119,23 +131,27 @@ class MyEdenredSensor(SensorEntity):
            This is the only method that should fetch new data for Home Assistant.
         """
         api = self._api
-        config = self._config
         card = self._card
         
         try:            
-            token = await api.login(config["username"], config["password"])
+            token = await api.login(self._config["username"], self._config["password"])
             if (token):
                 account = await api.getAccountDetails(card.id, token)
                 self._state = account.availableBalance
-                if config["includeTransactions"]:
-                    list = []
-                    [list.append({
+                movement_list = sorted(
+                    account.movementList,
+                    key=lambda tx: _parse_tx_date(tx.date),
+                    reverse=True,
+                )
+                self._transactions = [
+                    {
                         "date": t.date,
                         "name": t.name,
-                        "amount": t.amount
-                    }) for t in account.movementList]
-                    self._transactions = list
+                        "amount": t.amount,
+                    }
+                    for t in movement_list[:10]
+                ]
 
         except aiohttp.ClientError as err:
             self._available = False
-            _LOGGER.exception("Error updating data from DGEG API. %s", err)            
+            _LOGGER.exception("Error updating data from Pluxee API. %s", err)            

@@ -1,5 +1,5 @@
 {
-    "title": "MyEdenred meal card integration",
+    "title": "Pluxee meal card integration",
     "config": {
         "step": {
             "user": {
@@ -7,21 +7,19 @@
                 "description": "Please type your credentials",
                 "data": {
                     "username": "Email",
-                    "password": "Password",
-                    "includeTransactions": "Include the transaction list?"
+                    "password": "Password"
                 },
                 "data_description": {
-                    "username": "The email used to login in https://www.myedenred.pt/ portal",
-                    "password": "The password used to login in https://www.myedenred.pt/ portal",
-                    "includeTransactions": "Include the transaction list"
+                    "username": "The email used to login in https://consumidores.pluxee.pt/ portal",
+                    "password": "The password used to login in https://consumidores.pluxee.pt/ portal"
                 }
             }
         },
         "error": {
-            "auth": "Invalid credentials accessing https://www.myedenred.pt/ portal."
+            "auth": "Invalid credentials accessing https://consumidores.pluxee.pt/ portal."
         },
         "abort": {
-            "single_instance_allowed": "Only a single configuration of myEdenred is allowed.",
+            "single_instance_allowed": "Only a single configuration of Pluxee is allowed.",
             "already_configured": "Integration is already configured"
         }
     }

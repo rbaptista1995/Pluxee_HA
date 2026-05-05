@@ -18,7 +18,6 @@ DATA_SCHEMA = vol.Schema(
     { 
         vol.Required("username"): str, 
         vol.Required("password"): str,
-        vol.Required("includeTransactions"): bool,
     }
 )
 
